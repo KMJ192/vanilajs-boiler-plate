@@ -5,7 +5,7 @@
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
-      "@src/*": ["src/*"],
+      "@src/*": ["src_ts/*"],
       "@react/*": ["react/*"],
       "@router/*": ["router/*"]
     },
@@ -21,5 +21,5 @@
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": [".", "src/**/*", "./types", "declaration.d.ts", "global.d.ts"]
+  "include": [".", "src_ts/**/*", "./types", "declaration.d.ts", "global.d.ts"]
 }

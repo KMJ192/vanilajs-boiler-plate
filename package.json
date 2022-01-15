@@ -20,7 +20,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "fork-ts-checker-webpack-plugin": "^6.5.0",
     "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.4.5",
+    "mini-css-extract-plugin": "2.4.5",
     "prettier": "^2.5.1",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.2",
@@ -31,6 +31,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=DEVELOPMENT webpack-dev-server --config webpack.dev.js",
+    "start:ts": "cross-env NODE_ENV=DEVELOPMENT_TS webpack-dev-server --config webpack.dev.js",
     "build": "cross-env NODE_ENV=PRODUCTION webpack --config webpack.prod.js",
     "dev": "cross-env NODE_ENV=DEVELOPMENT webpack --config webpack.dev.js",
     "clear": "rm -rf node_modules",
