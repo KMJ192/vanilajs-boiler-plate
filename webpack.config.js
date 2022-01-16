@@ -7,6 +7,22 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'PRODUCTION';
 
+const postcssLoader = {
+  loader: 'postcss-loader',
+  options: {
+    postcssOptions: {
+      config: path.resolve(__dirname, 'postcss.config.js'),
+    },
+  },
+};
+
+const cssLoader = {
+  loader: 'css-loader',
+  options: {
+    modules: true,
+  },
+};
+
 module.exports = {
   entry: './index.ts',
   output: {
@@ -32,6 +48,29 @@ module.exports = {
         test: /\.js$/i,
         use: ['babel-loader'],
         exclude: /node_modules/,
+      },
+      {
+        test: /\.s[ac]ss/i,
+        oneOf: [
+          {
+            test: /\.module\.s[ac]ss/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              cssLoader,
+              postcssLoader,
+              'sass-loader',
+            ],
+          },
+          {
+            test: /\.s[ac]ss/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              'css-loader',
+              postcssLoader,
+              'sass-loader',
+            ],
+          },
+        ],
       },
       {
         test: /\.css$/i,
