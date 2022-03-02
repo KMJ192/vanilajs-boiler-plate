@@ -18,9 +18,9 @@ module.exports = {
     extensions: ['.js', '.ts'],
     alias: {
       '@src': path.resolve(__dirname, 'src'),
-      '@react': path.resolve(__dirname, 'react'),
-      '@router': path.resolve(__dirname, 'router'),
-      '@api': path.resolve(__dirname, 'api'),
+      '@react': path.resolve(__dirname, 'custom_modules/react'),
+      '@router': path.resolve(__dirname, 'custom_modules/router'),
+      '@api': path.resolve(__dirname, 'custom_modules/api'),
     },
   },
   module: {

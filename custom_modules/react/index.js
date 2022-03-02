@@ -1,1 +1,1 @@
-export { default, useState } from 'React';
+export { default, useState } from './React';
