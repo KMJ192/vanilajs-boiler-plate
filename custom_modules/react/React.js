@@ -6,7 +6,7 @@ const React = (function () {
   let stateKey = 0;
   const states = [];
 
-  const renderer = debounseFrame(() => {
+  const reactRenderer = debounseFrame(() => {
     if (!root || !router) return;
     const vDOM = router();
     root.innerHTML = '';
@@ -17,7 +17,7 @@ const React = (function () {
     if (!node || !component) return;
     root = node;
     router = component;
-    renderer();
+    reactRenderer();
   }
 
   function useState(initState) {
@@ -27,7 +27,7 @@ const React = (function () {
       if (newState === state) return;
       if (JSON.stringify(newState) === JSON.stringify(state)) return;
       states[key] = newState;
-      renderer();
+      reactRenderer();
     };
     stateKey += 1;
     return [state, setState];
