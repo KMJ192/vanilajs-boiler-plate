@@ -16,9 +16,6 @@ const React = (function () {
     const vDOM = components();
     root.innerHTML = vDOM;
     stateKey = 0;
-    if (injectedEvent.event) {
-      injectedEvent.unmount = injectedEvent.event();
-    }
   });
 
   function render(component, node) {
