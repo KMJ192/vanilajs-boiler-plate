@@ -2,21 +2,29 @@ import { debounseFrame } from './utils';
 
 const React = (function () {
   let root = null;
-  let router = null;
+  let components = null;
   let stateKey = 0;
-  const states = [];
+  let states = [];
+  let unmount = undefined;
+  let injectedEvent = {
+    event: undefined,
+    unmount: undefined,
+  };
 
   const reactRenderer = debounseFrame(() => {
-    if (!root || !router) return;
-    const vDOM = router();
-    root.innerHTML = '';
+    if (!root || !components) return;
+    const vDOM = components();
+    root.innerHTML = vDOM;
     stateKey = 0;
+    if (injectedEvent.event) {
+      injectedEvent.unmount = injectedEvent.event();
+    }
   });
 
-  function render(node, component) {
+  function render(component, node) {
     if (!node || !component) return;
     root = node;
-    router = component;
+    components = component;
     reactRenderer();
   }
 
@@ -26,19 +34,50 @@ const React = (function () {
     const setState = (newState) => {
       if (newState === state) return;
       if (JSON.stringify(newState) === JSON.stringify(state)) return;
-      states[key] = newState;
+      states[stateKey] = newState;
       reactRenderer();
     };
     stateKey += 1;
     return [state, setState];
   }
 
+  function useEffect(effect, depsArray) {
+    const hasNoDeps = !depsArray;
+    const deps = states[stateKey];
+    const hasChangedDeps = deps
+      ? !depsArray?.every((el, i) => el === depsArray[i])
+      : true;
+    if (hasNoDeps || hasChangedDeps) {
+      unmount = effect();
+      states[stateKey] = depsArray;
+    }
+    stateKey++;
+  }
+
+  function useDocument(callback) {
+    injectedEvent.event = callback;
+  }
+
+  function routerRender() {
+    states = [];
+    if (unmount) {
+      unmount();
+    }
+    if (injectedEvent.unmount) {
+      injectedEvent.unmount();
+    }
+    reactRenderer();
+  }
+
   return {
     useState,
+    useEffect,
+    useDocument,
     render,
+    routerRender,
   };
 })();
 
-export const { useState, render } = React;
+export const { useState, useEffect, useDocument, render } = React;
 
 export default React;
