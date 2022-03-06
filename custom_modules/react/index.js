@@ -1,1 +1,1 @@
-export { default, useState, useEffect, useDocument } from './React';
+export { default, useState, useDocument } from './React';
