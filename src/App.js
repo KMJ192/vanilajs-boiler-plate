@@ -5,6 +5,12 @@ import MainPage from './MainPage';
 import NotFoundPage from './NotFoundPage';
 
 function App() {
-  return MainPage();
+  return useRouter(MainPage, NotFoundPage, [
+    {
+      element: secondPage,
+      path: '/second-page',
+      queryString: false,
+    },
+  ]);
 }
 export default App;

@@ -1,40 +1,82 @@
+import { debounseFrame } from './utils';
+
 const React = (function () {
-  let state;
-  let eventFunction;
-  let components;
-  let rootNode;
+  let root = null;
+  let components = null;
+  let stateKey = 0;
+  let states = [];
+  let unmount = undefined;
+  let injectedEvent = {
+    event: undefined,
+    unmount: undefined,
+  };
 
-  function reactRenderer() {
-    rootNode.innerHTML = components();
-    eventFunction();
-  }
+  const reactRenderer = debounseFrame(() => {
+    if (!root || !components) return;
+    root.innerHTML = components();
+    stateKey = 0;
+    if (injectedEvent.event) {
+      injectedEvent.unmount = injectedEvent.event();
+    }
+  });
 
-  function useState(initState) {
-    state = initState;
-    const setState = (newState) => {
-      state = newState;
-      reactRenderer();
-    };
-    return [state, setState];
-  }
-
-  function render(app, node) {
-    components = app;
-    rootNode = node;
+  function render(component, node) {
+    if (!node || !component) return;
+    root = node;
+    components = component;
     reactRenderer();
   }
 
-  function useDocument(eventCallback) {
-    eventFunction = eventCallback;
+  function useState(initState) {
+    if (states.length === 0) states.push(initState);
+    const state = states[stateKey];
+    const setState = (newState) => {
+      if (newState === state) return;
+      if (JSON.stringify(newState) === JSON.stringify(state)) return;
+      states[stateKey] = newState;
+      reactRenderer();
+    };
+    stateKey += 1;
+    return [state, setState];
   }
 
-  return { render, useState, useDocument, routeRender };
+  function useEffect(effect, depsArray) {
+    const hasNoDeps = !depsArray;
+    const deps = states[stateKey];
+    const hasChangedDeps = deps
+      ? !depsArray?.every((el, i) => el === depsArray[i])
+      : true;
+    if (hasNoDeps || hasChangedDeps) {
+      unmount = effect();
+      states[stateKey] = depsArray;
+    }
+    stateKey++;
+  }
+
+  function useDocument(callback) {
+    injectedEvent.event = callback;
+  }
+
+  function routerRender() {
+    states = [];
+    if (unmount) {
+      unmount();
+    }
+    if (injectedEvent.unmount) {
+      injectedEvent.unmount();
+    }
+    reactRenderer();
+  }
+
+  return {
+    useState,
+    useEffect,
+    useDocument,
+    render,
+    routerRender,
+  };
 })();
 
-export const { useState, useDocument, render, routeRender } = React;
-export default React;
+export const { useState, useEffect, useDocument, render } = React;
 
-// state => 변수
-// setState => 상태를 변경시키는 함수
-// useState => 상태를 만드는 함수
-// const [state, setState] = useState(0);
+export default React;

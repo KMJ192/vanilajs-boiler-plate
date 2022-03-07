@@ -1,5 +1,9 @@
 import React from '@react';
 
+window.addEventListener('popstate', () => {
+  React.routerRender();
+});
+
 const Router = (function () {
   let query = {};
   function useRouter(MainPage, NotFound, components) {
