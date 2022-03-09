@@ -15,8 +15,8 @@ function MainPage() {
 
     const move = document.getElementsByClassName('move');
 
-    const increaseBtn = document.getElementById('increase');
-    const decreaseBtn = document.getElementById('decrease');
+    const increaseBtn = document.getElementsByClassName('increase');
+    const decreaseBtn = document.getElementsByClassName('decrease');
 
     const inputTag = document.getElementsByClassName('input');
     const outputTag = document.getElementsByClassName('output');
