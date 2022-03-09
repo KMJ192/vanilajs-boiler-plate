@@ -5,9 +5,9 @@
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
-      "@src/*": ["src_ts/*"],
-      "@react/*": ["react/*"],
-      "@router/*": ["router/*"]
+      "@src/*": ["src/*"],
+      "@react/*": ["custom_modules/react/*"],
+      "@router/*": ["custom_modules/router/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext", "ES2015"],
