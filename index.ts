@@ -1,4 +1,3 @@
-import React from '@react';
-import App from './src/App';
+import AutoCompletion from '@src/Algorithm/AutoCompletion';
 
-React.render(App, document.getElementById('App'));
+AutoCompletion();
