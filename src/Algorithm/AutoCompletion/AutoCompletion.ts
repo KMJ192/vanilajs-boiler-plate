@@ -18,12 +18,12 @@ function AutoCompletion() {
     trie.insert(ext);
   });
   console.log(trie.maked);
-  console.log(trie.search('ㅎ'));
+  // console.log(trie.search('ㅎ'));
 
-  console.log('ㄱ'.charCodeAt(0));
-  console.log('ㅎ'.charCodeAt(0));
-  console.log('ㅏ'.charCodeAt(0));
-  console.log('ㅣ'.charCodeAt(0));
+  // console.log('ㄱ'.charCodeAt(0));
+  // console.log('ㅎ'.charCodeAt(0));
+  // console.log('ㅏ'.charCodeAt(0));
+  // console.log('ㅣ'.charCodeAt(0));
 }
 
 export default AutoCompletion;
